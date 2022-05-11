@@ -7,6 +7,6 @@ FROM roles;
 
 
 SELECT *
-FROM employee;
+FROM employees;
 
 
