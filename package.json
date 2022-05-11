@@ -1,0 +1,26 @@
+{
+  "name": "team-data-tracker",
+  "version": "1.0.0",
+  "description": "GitHub Page: https://github.com/AndrewYoung72/Team-data-tracker",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AndrewYoung72/Team-data-tracker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AndrewYoung72/Team-data-tracker/issues"
+  },
+  "homepage": "https://github.com/AndrewYoung72/Team-data-tracker#readme",
+  "dependencies": {
+    "enquirer": "^2.3.6",
+    "inquirer": "^8.2.4"
+  }
+}
