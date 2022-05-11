@@ -1,3 +1,5 @@
+CREATE DATABASE employee_db;
+
 DROP DATABASE IF EXISTS employee_db;
 
 CREATE DATABASE employee_db;
@@ -17,12 +19,11 @@ CREATE TABLE roles (
   department_id INT NOT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (department_id),
-  REFERENCES departments(id),
-  ON DELETE SET NULL
+  REFERENCES departments(id)
 );
 
 
-CREATE TABLE employee (
+CREATE TABLE employees (
   id INT NOT NULL,
   first_name VARCHAR(30) NOT NULL,
   last_name VARCHAR(30) NOT NULL,
