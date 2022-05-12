@@ -12,6 +12,9 @@ const db = mysql.createConnection(
   console.log(`Connected to the employee_db database.`)
 );
 
+
+
+
 const menu = () => {
   inquirer
     .prompt({
@@ -47,6 +50,26 @@ const menu = () => {
     });
 };
 
+const viewDepartments = () => {
+  db.query("SELECT * FROM departments;", (err, res) => {
+    console.table(res);
+    menu();
+  });
+};
+const viewRoles = () => {
+  db.query("SELECT * FROM roles;", (err, res) => {
+    console.table(res);
+    menu();
+  });
+};
+const viewEmployees = () => {
+  db.query("SELECT * FROM employees;", (err, res) => {
+    console.table(res);
+    menu();
+  });
+};
+
+
 const addDepartment = () => {
   inquirer
     .prompt([
@@ -76,36 +99,36 @@ const addDepartment = () => {
 };
 
 const addRole = () => {
-  inquirer.prompt([
-    {
-      type: "input",
-      name: "roleId",
-      message: "Add role id number",
-    },
-    {
-      type: "input",
-      name: "title",
-      message: "Add role title",
-    },
-    {
-      type: "input",
-      name: "salary",
-      message: "Add salary",
-    },
-    {
-      type: "input",
-      name: "DepartmentId",
-      message: "Add department id",
-    },
-  ]);
-  menu();
-};
-
-const viewDepartments = () => {
-  db.query("SELECT * FROM departments;", (err, res) => {
-    console.table(res);
-    menu();
-  });
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "title",
+        message: "Add role title",
+      },
+      {
+        type: "input",
+        name: "salary",
+        message: "Add salary",
+      },
+      {
+        type: "input",
+        name: "departmentName",
+        message: "Add department id",
+      },
+    ])
+    .then((answers) => {
+      db.query(
+        `INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?);`,
+        [answers.title],
+        [answers.salary],
+        [answers.departmentName],
+        (err, res) => {
+          console.table(res);
+          menu();
+        }
+      );
+    });
 };
 
 const addEmployee = () => {
@@ -122,19 +145,25 @@ const addEmployee = () => {
     },
     {
       type: "input",
-      name: " roleId",
-      message: "Add role id number name",
+      name: "roleId",
+      message: "Add employee's role id number",
     },
-    {
-      type: "input",
-      name: "managerId",
-      message: "Add manager's id number",
-    },
-  ]);
-  menu();
+  ])
+  .then((answers) => {
+    db.query(
+      `INSERT INTO employees (first_name, last_name, role_id) VALUES (?,?,?);`,
+      [answers.firstName],
+      [answers.lastName],
+      [answers.roleId],
+      (err, res) => {
+        console.table(res);
+        menu();
+      }
+    )
+  });
 };
 
-menu();
 
+menu();
 
 //UPDATE employees SET role_id = 2 WHERE id = 1
