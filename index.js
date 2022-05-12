@@ -1,5 +1,4 @@
 const inquirer = require("inquirer");
-const fs = require("fs");
 const mysql = require("mysql2");
 
 const db = mysql.createConnection(
@@ -11,9 +10,6 @@ const db = mysql.createConnection(
   },
   console.log(`Connected to the employee_db database.`)
 );
-
-
-
 
 const menu = () => {
   inquirer
@@ -69,7 +65,6 @@ const viewEmployees = () => {
   });
 };
 
-
 const addDepartment = () => {
   inquirer
     .prompt([
@@ -113,7 +108,7 @@ const addRole = () => {
       },
       {
         type: "input",
-        name: "departmentName",
+        name: "departmentId",
         message: "Add department id",
       },
     ])
@@ -122,7 +117,7 @@ const addRole = () => {
         `INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?);`,
         [answers.title],
         [answers.salary],
-        [answers.departmentName],
+        [answers.departmentId],
         (err, res) => {
           console.table(res);
           menu();
@@ -132,37 +127,37 @@ const addRole = () => {
 };
 
 const addEmployee = () => {
-  inquirer.prompt([
-    {
-      type: "input",
-      name: "firstName",
-      message: "Add employee's first name",
-    },
-    {
-      type: "input",
-      name: "lastName",
-      message: "Add employee's last name",
-    },
-    {
-      type: "input",
-      name: "roleId",
-      message: "Add employee's role id number",
-    },
-  ])
-  .then((answers) => {
-    db.query(
-      `INSERT INTO employees (first_name, last_name, role_id) VALUES (?,?,?);`,
-      [answers.firstName],
-      [answers.lastName],
-      [answers.roleId],
-      (err, res) => {
-        console.table(res);
-        menu();
-      }
-    )
-  });
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "firstName",
+        message: "Add employee's first name",
+      },
+      {
+        type: "input",
+        name: "lastName",
+        message: "Add employee's last name",
+      },
+      {
+        type: "input",
+        name: "managerId",
+        message: "Add manager's id number or null",
+      },
+    ])
+    .then((answers) => {
+      db.query(
+        `INSERT INTO employees (first_name, last_name, manager_id) VALUES (?,?,?);`,
+        [answers.firstName],
+        [answers.lastName],
+        [answers.managerId],
+        (err, res) => {
+          console.table(res);
+          menu();
+        }
+      );
+    });
 };
-
 
 menu();
 
