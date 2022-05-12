@@ -7,6 +7,16 @@ const rolesArray = [];
 const employeesArray = [];
 
 
+const db = mysql.createConnection(
+  {
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'employee_db'
+  },
+  console.log(`Connected to the employee_db database.`)
+);
+
 
 
 const menu = () => {
@@ -21,7 +31,8 @@ const menu = () => {
         "View all employees",
         "Add a department",
         "Add a role",
-        "Add an employee"
+        "Add an employee",
+        "Finish Build",
       ]
     })
     .then((answer) => {
@@ -89,13 +100,28 @@ const addEmployee = () => {
   inquirer.prompt([
   {
     type: "input",
-    name: "Department id",
+    name: "employee id",
     message: "Add department id number",
   },
   {
     type: "input",
-    name: "Department name",
-    message: "Add department name",
+    name: "first name",
+    message: "Add employee's first name",
+  },
+  {
+    type: "input",
+    name: "last name",
+    message: "Add employee's last name",
+  },
+  {
+    type: "input",
+    name: " role id",
+    message: "Add role id number name",
+  },
+  {
+    type: "input",
+    name: "manager id",
+    message: "Add manager's id number",
   },
 
 ])
