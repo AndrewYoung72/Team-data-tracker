@@ -24,6 +24,7 @@ const menu = () => {
         "Add a department",
         "Add a role",
         "Add an employee",
+        "Update employee data",
         "Finish Build",
       ],
     })
@@ -40,6 +41,8 @@ const menu = () => {
         addRole();
       } else if (answer.options == "Add an employee") {
         addEmployee();
+      } else if (answer.options == "Update employee data") {
+        updateEmployee();
       } else {
         finishBuild();
       }
@@ -83,13 +86,7 @@ const addDepartment = () => {
           menu();
         }
       );
-      // db.query(
-      //   `INSERT INTO departments (dep_name) VALUES ("${answers.departmentName}");`,
-      //   (err, res) => {
-      //     console.table(res);
-      //     menu();
-      //   }
-      // );
+     
     });
 };
 
@@ -160,6 +157,41 @@ const addEmployee = () => {
     });
 };
 
+const updateEmployee = () => {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "title",
+        message: "Update employee title.",
+      },
+      {
+        type: "input",
+        name: "salary",
+        message: "Update employee salary.",
+      },
+      {
+        type: "input",
+        name: "roleId",
+        message: "Update employee role id number.",
+      },
+  ])
+  .then((answers) => {
+    db.query(
+      `UPDATE employees SET (title, salary, role_id) VALUES (?, ?, ?);`,
+      [answers.title, answers.salary, answers.roleId], 
+      (err, res) => {
+        console.table(res);
+        menu();
+      }
+    );
+  });
+
+};
+
+const finishBuild = () => {
+  console.log('If you are finished press control c to return to your command line.')
+}
+
 menu();
 
-//UPDATE employees SET role_id = 2 WHERE id = 1
