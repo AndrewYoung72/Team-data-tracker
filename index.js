@@ -115,9 +115,7 @@ const addRole = () => {
     .then((answers) => {
       db.query(
         `INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?);`,
-        [answers.title],
-        [answers.salary],
-        [answers.departmentId],
+        [answers.title, answers.salary, answers.departmentId],
         (err, res) => {
           console.table(res);
           menu();
@@ -132,25 +130,28 @@ const addEmployee = () => {
       {
         type: "input",
         name: "firstName",
-        message: "Add employee's first name",
+        message: "Add employee's first name.",
       },
       {
         type: "input",
         name: "lastName",
-        message: "Add employee's last name",
+        message: "Add employee's last name.",
+      },
+      {
+        type: "input",
+        name: "roleId",
+        message: "Add employee's role id number.",
       },
       {
         type: "input",
         name: "managerId",
-        message: "Add manager's id number or null",
+        message: "Add manager's id number or null.",
       },
     ])
     .then((answers) => {
       db.query(
-        `INSERT INTO employees (first_name, last_name, manager_id) VALUES (?,?,?);`,
-        [answers.firstName],
-        [answers.lastName],
-        [answers.managerId],
+        `INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?);`,
+        [answers.firstName, answers.lastName, answers.roleId, answers.managerId], 
         (err, res) => {
           console.table(res);
           menu();
