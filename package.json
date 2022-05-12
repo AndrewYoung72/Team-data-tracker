@@ -21,6 +21,7 @@
   "homepage": "https://github.com/AndrewYoung72/Team-data-tracker#readme",
   "dependencies": {
     "enquirer": "^2.3.6",
+    "express": "^4.18.1",
     "inquirer": "^8.2.4",
     "mysql2": "^2.3.3"
   }
