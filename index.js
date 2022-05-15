@@ -83,10 +83,10 @@ const addDepartment = () => {
         [answers.departmentName],
         (err, res) => {
           console.table(res);
+          console.log("Added to the database!");
           menu();
         }
       );
-     
     });
 };
 
@@ -148,7 +148,12 @@ const addEmployee = () => {
     .then((answers) => {
       db.query(
         `INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?);`,
-        [answers.firstName, answers.lastName, answers.roleId, answers.managerId], 
+        [
+          answers.firstName,
+          answers.lastName,
+          answers.roleId,
+          answers.managerId,
+        ],
         (err, res) => {
           console.table(res);
           menu();
@@ -158,40 +163,54 @@ const addEmployee = () => {
 };
 
 const updateEmployee = () => {
-  inquirer
-    .prompt([
-      {
-        type: "input",
-        name: "title",
-        message: "Update employee title.",
-      },
-      {
-        type: "input",
-        name: "salary",
-        message: "Update employee salary.",
-      },
-      {
-        type: "input",
-        name: "roleId",
-        message: "Update employee role id number.",
-      },
-  ])
-  .then((answers) => {
-    db.query(
-      `UPDATE employees SET (title, salary, role_id) VALUES (?, ?, ?);`,
-      [answers.title, answers.salary, answers.roleId], 
-      (err, res) => {
-        console.table(res);
-        menu();
-      }
-    );
+  db.query("SELECT * FROM employees;", (err, resSe) => {
+    console.log(resSe);
+    inquirer
+      .prompt([
+        {
+          type: "list",
+          name: "targetEmployee",
+          message: "Which employee would you like to update?",
+          choices: resSe.map((employee) => {
+            return {
+              name: employee.first_name,
+              value: employee.id,
+            };
+          }),
+        },
+      ])
+      .then(() => {
+        db.query("SELECT * FROM roles;", (err, resSr) => {
+          console.log(resSr);
+          inquirer
+            .prompt([
+              {
+                type: "input",
+                name: "targetRole",
+                message: "What is the new role id of the employee?",
+              },
+            ])
+            .then(() => {
+              db.query(
+                `UPDATE employees SET (role_id) WHERE (id); VALUES(?, ?);`,
+                [resSr.id, employee.id],
+                (err, update) => {
+                  console.table(update);
+                  menu();
+                }
+              );
+            });
+        });
+      });
   });
-
 };
 
 const finishBuild = () => {
-  console.log('If you are finished press control c to return to your command line.')
-}
+  console.log(
+    "If you are finished press control c to return to your command line."
+  );
+};
 
 menu();
 
+//UPDATE employees SET role_id = 2 WHERE id = 1

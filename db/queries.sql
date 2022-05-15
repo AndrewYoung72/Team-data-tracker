@@ -7,6 +7,6 @@ FROM roles;
 
 
 SELECT *
+FROM employees;
 
 
-//UPDATE employees SET role_id = 2 WHERE id = 1
