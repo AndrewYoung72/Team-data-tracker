@@ -163,7 +163,7 @@ const addEmployee = () => {
 };
 
 const updateEmployee = () => {
-  db.query("SELECT * FROM employees;", (err, resSe) => {
+  db.query(`SELECT * FROM employees;`, (err, resSe) => {
     console.log(resSe);
     inquirer
       .prompt([
@@ -192,8 +192,8 @@ const updateEmployee = () => {
             ])
             .then(() => {
               db.query(
-                `UPDATE employees SET (role_id) WHERE (id); VALUES(?, ?);`,
-                [resSr.id, employee.id],
+                `UPDATE employees SET role_id = ? WHERE id = ?; [role_id, id]`,
+                [resSr.id],
                 (err, update) => {
                   console.table(update);
                   menu();
