@@ -173,8 +173,10 @@ const updateEmployee = () => {
           message: "Which employee would you like to update?",
           choices: resSe.map((employee) => {
             return {
-              name: employee.first_name,
-              value: employee.id,
+              id: employee.id,
+              first_name: employee.first_name,
+              last_name: employee.last_name,
+              role_id: employee.role_id
             };
           }),
         },
@@ -190,10 +192,10 @@ const updateEmployee = () => {
                 message: "What is the new role id of the employee?",
               },
             ])
-            .then(() => {
+            .then((selection) => {
               db.query(
-                `UPDATE employees SET role_id = ? WHERE id = ?; [role_id, id]`,
-                [resSr.id],
+                `UPDATE employees SET role_id = (role_id) WHERE id = (id) VALUES (?, ?);`,
+                [selection.targetRole, resSe.id],
                 (err, update) => {
                   console.table(update);
                   menu();
