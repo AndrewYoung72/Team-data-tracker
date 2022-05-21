@@ -4,8 +4,8 @@ https://github.com/AndrewYoung72/Team-data-tracker
 
 Demonstration:
 
-
-
+[
+](https://user-images.githubusercontent.com/97897877/169667921-6da36047-1801-4e03-b3c0-fe0f0d7251ef.mp4)
 ## Purpose
 The purpose of this challenge was to build an app using node.js, inquirer, and mysql that will store employee data. The app should allow the user to create and manage employee data from the command line.
 
