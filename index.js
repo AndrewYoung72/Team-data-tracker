@@ -163,50 +163,50 @@ const addEmployee = () => {
 };
 
 const updateEmployee = () => {
-  db.query(`SELECT * FROM employees;`, (err, resSe) => {
-    console.log(resSe);
+  db.query("SELECT * FROM employees", (err, resEm) => {
+    if (err) throw err;
     inquirer
       .prompt([
         {
           type: "list",
+          message: "Which employee's role would you like to update?",
           name: "targetEmployee",
-          message: "Which employee would you like to update?",
-          choices: resSe.map((employee) => {
-            return {
-              id: employee.id,
-              first_name: employee.first_name,
-              last_name: employee.last_name,
-              role_id: employee.role_id
-            };
-          }),
+          choices: resEm.map(
+            (resEm) => resEm.id + " " + resEm.first_name + " " + resEm.last_name
+          ),
         },
       ])
-      .then(() => {
-        db.query("SELECT * FROM roles;", (err, resSr) => {
-          console.log(resSr);
+      .then((employee) => {
+        const empId = employee.targetEmployee.split(' ')[0];
+        db.query("SELECT * FROM roles", (err, resRi) => {
+          if (err) throw err;
           inquirer
             .prompt([
               {
-                type: "input",
-                name: "targetRole",
-                message: "What is the new role id of the employee?",
+                type: "list",
+                message: "What is the employee's new role?",
+                name: "roleUd",
+                choices: resRi.map((resRi) => resRi.id),
               },
             ])
-            .then((selection) => {
-              db.query(
-                `UPDATE employees SET role_id = (role_id) WHERE id = (id) VALUES (?, ?);`,
-                [selection.targetRole, resSe.id],
-                (err, update) => {
-                  console.table(update);
-                  menu();
-                }
+            .then((roleUd) => {
+              const roleId = roleUd.roleUd;
+              console.log(employee, roleUd);
+              console.log(empId, resEm.id);
+              const updateQuery = db.query(
+                "UPDATE employees SET role_id = ? WHERE id = ?",
+                [roleId, empId],
+                (err,
+                (res) => {
+                  if (err) throw err;
+                })
               );
+              menu();
             });
         });
       });
   });
 };
-
 const finishBuild = () => {
   console.log(
     "If you are finished press control c to return to your command line."
